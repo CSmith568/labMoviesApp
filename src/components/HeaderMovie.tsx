@@ -2,10 +2,12 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { useParams } from "react-router-dom";
+import { MovieDetailsProps } from "../types/movieAppTypes";
 
-const HeaderMovie = ({ title }: { title: string }) => {
-  // get movie id from the URL
+const MovieHeader = (movie: MovieDetailsProps) => {
   const { id } = useParams<{ id: string }>();
+
+  const safeTitle = movie.title ?? "Untitled movie";
 
   // read favourites array from localStorage
   const favourites = JSON.parse(
@@ -14,24 +16,21 @@ const HeaderMovie = ({ title }: { title: string }) => {
 
   // check if this movie is favourited
   const isFavourite = favourites.some(
-    (movie: { id: number }) => movie.id === Number(id)
+    (fav: { id: number }) => fav.id === Number(id)
   );
 
   return (
-    
-<div
-  style={{
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center", // centres content
-    width: "100%",            // aligns with page header
-    gap: "10px",
-  }}
->
-      {/* movie title */}
-      <Typography variant="h4">{title}</Typography>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        gap: "10px",
+      }}
+    >
+      <Typography variant="h4">{safeTitle}</Typography>
 
-      {/* show red heart only if favourited */}
       {isFavourite && (
         <IconButton disableRipple>
           <FavoriteIcon style={{ color: "red" }} />
@@ -41,4 +40,4 @@ const HeaderMovie = ({ title }: { title: string }) => {
   );
 };
 
-export default HeaderMovie;
+export default MovieHeader;
