@@ -1,0 +1,36 @@
+import ReactDOM from 'react-dom/client'
+import { BrowserRouter, Route, Navigate, Routes , Link} from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import MoviePage from "./pages/MovieDetailsPage";
+import FavouriteMoviesPage from "./pages/FavouriteMoviesPage";
+import { StrictMode } from "react";
+
+const App = () => {
+  return (
+     <BrowserRouter>
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/movies/favourites">Favourites</Link>
+        </li>
+      </ul>
+      <Routes>
+        <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
+        <Route path="/movies/:id" element={<MoviePage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+
+ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+).render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
