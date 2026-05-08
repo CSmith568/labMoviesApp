@@ -1,43 +1,44 @@
-import React from "react";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import Paper from "@mui/material/Paper";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import HomeIcon from "@mui/icons-material/Home";
-import { MovieDetailsProps } from "../types/movieAppTypes"; 
+import { useParams } from "react-router-dom";
 
-const styles = {
-    root: {  
-    display: "flex",
-    justifyContent: "space-around",
-    alignItems: "center",
-    flexWrap: "wrap",
-    padding: 1.5,
-  },
-};
+const HeaderMovie = ({ title }: { title: string }) => {
+  // get movie id from the URL
+  const { id } = useParams<{ id: string }>();
 
-const MovieHeader= (movie: MovieDetailsProps) => {
-  
+  // read favourites array from localStorage
+  const favourites = JSON.parse(
+    localStorage.getItem("favourites") || "[]"
+  );
+
+  // check if this movie is favourited
+  const isFavourite = favourites.some(
+    (movie: { id: number }) => movie.id === Number(id)
+  );
+
   return (
-    <Paper component="div" sx={styles.root}>
-      <IconButton aria-label="go back">
-        <ArrowBackIcon color="primary" fontSize="large" />
-      </IconButton>
+    
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center", // centres content
+    width: "100%",            // aligns with page header
+    gap: "10px",
+  }}
+>
+      {/* movie title */}
+      <Typography variant="h4">{title}</Typography>
 
-      <Typography variant="h4" component="h3">
-        {movie.title}{"   "}
-        <a href={movie.homepage}>
-          <HomeIcon color="primary"  fontSize="large"/>
-        </a>
-        <br />
-        <span>{`${movie.tagline}`} </span>
-      </Typography>
-      <IconButton aria-label="go forward">
-        <ArrowForwardIcon color="primary" fontSize="large" />
-      </IconButton>
-    </Paper>
+      {/* show red heart only if favourited */}
+      {isFavourite && (
+        <IconButton disableRipple>
+          <FavoriteIcon style={{ color: "red" }} />
+        </IconButton>
+      )}
+    </div>
   );
 };
 
-export default MovieHeader;
+export default HeaderMovie;
