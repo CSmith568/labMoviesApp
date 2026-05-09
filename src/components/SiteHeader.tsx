@@ -1,10 +1,9 @@
-import React, { useState, MouseEvent } from "react";
+import { useState, MouseEvent } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
@@ -18,7 +17,6 @@ const styles = {
     },
   };
 
-const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const SiteHeader = () => {
   const navigate = useNavigate();
@@ -27,11 +25,13 @@ const SiteHeader = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
-  const menuOptions = [
-    { label: "Home", path: "/" },
-    { label: "Favorites", path: "/movies/favourites" },
-    { label: "Option 3", path: "/" },
-    { label: "Option 4", path: "/" },
+  
+const menuOptions = [
+  { label: "Home", path: "/" },
+  { label: "Favorites", path: "/movies/favourites" },
+  { label: "Upcoming", path: "/movies/upcoming" },  
+  { label: "Option 3", path: "/" },
+  { label: "Option 4", path: "/" },
   ];
 
   const handleMenuSelect = (pageURL: string) => {
@@ -44,7 +44,7 @@ const SiteHeader = () => {
 
   return (
     <>
-      <AppBar position="fixed" elevation={0} color="primary">
+      <AppBar position="sticky" elevation={0} color="primary">
         <Toolbar>
           <Typography variant="h4" sx={styles.title}>
             TMDB Client
@@ -104,7 +104,6 @@ const SiteHeader = () => {
           )}
         </Toolbar>
       </AppBar>
-      <Offset />
     </>
   );
 };
