@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -10,24 +10,20 @@ import SortIcon from "@mui/icons-material/Sort";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { SelectChangeEvent } from "@mui/material";
-import { FilterOption } from "../types/movieAppTypes";
-import { getGenres } from "../api/tmdb-api";
 
+import type { FilterOption, genreData } from "../types/movieAppTypes";
+import { getGenres } from "../api/tmdb-api";
+import { useQuery } from "react-query";
+import Spinner from "./Spinner";
 
 const styles = {
   root: { maxWidth: 345 },
-  media: { height: 300 },
   formControl: {
     margin: 1,
     minWidth: 220,
     backgroundColor: "rgb(255, 255, 255)",
   },
 };
-
-interface MovieGenre {
-  id: string;
-  name: string;
-}
 
 interface FilterMoviesCardProps {
   onUserInput: (f: FilterOption, s: string) => void;
@@ -40,16 +36,23 @@ const FilterMoviesCard = ({
   genreFilter,
   onUserInput,
 }: FilterMoviesCardProps) => {
-  const [genres, setGenres] = useState<MovieGenre[]>([
-    { id: "0", name: "All" },
-  ]);
 
-    useEffect(() => {
-    getGenres().then((allGenres) => {
-      setGenres([genres[0], ...allGenres]);
-    });
-  }, [])
+  const { data, error, isLoading, isError } =
+    useQuery<genreData, Error>("genres", getGenres);
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return <h1>{error.message}</h1>;
+  }
+
+  const genres = data?.genres ? [...data.genres] : [];
+
+  if (genres.length > 0 && genres[0].name !== "All") {
+    genres.unshift({ id: 0, name: "All" });
+  }
 
   const handleChange = (
     e: SelectChangeEvent | ChangeEvent<HTMLInputElement>,
@@ -79,7 +82,6 @@ const FilterMoviesCard = ({
 
           <TextField
             sx={styles.formControl}
-            id="filled-search"
             label="Search field"
             type="search"
             value={titleFilter}
@@ -91,12 +93,11 @@ const FilterMoviesCard = ({
             <InputLabel id="genre-label">Genre</InputLabel>
             <Select
               labelId="genre-label"
-              id="genre-select"
               value={genreFilter}
               onChange={handleGenreChange}
             >
               {genres.map((genre) => (
-                <MenuItem key={genre.id} value={genre.id}>
+                <MenuItem key={genre.id} value={genre.id.toString()}>
                   {genre.name}
                 </MenuItem>
               ))}

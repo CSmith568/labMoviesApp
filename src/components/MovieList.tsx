@@ -10,7 +10,7 @@ const MovieList  = ({ movies, selectFavourite }: BaseMovieListProps) => {
   return (
     <Grid container spacing={5}>
       {movies.map((m) => (
-        <Grid key={m.id} item xs={12} sm={6} md={4} lg={3} xl={2}>
+        <Grid key={m.id} item xs={12} sm={6} md={4} lg={3}>
           <Movie movie={m} selectFavourite={selectFavourite} />
         </Grid>
       ))}

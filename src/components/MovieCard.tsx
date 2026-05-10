@@ -28,7 +28,7 @@ const styles = {
 interface MovieCardProps  {
   movie: DiscoverMovieOverviewProps;
   selectFavourite: (movieId: number) => void;
-} // Add this
+} 
 
 const MovieCard = ({movie, selectFavourite}: MovieCardProps) => {
 
