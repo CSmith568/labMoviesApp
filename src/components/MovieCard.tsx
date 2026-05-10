@@ -1,3 +1,5 @@
+
+import React, { MouseEvent, useContext } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -10,12 +12,12 @@ import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import img from '../images/film-poster-placeholder.png';
-import { DiscoverMovieOverviewProps } from "../types/movieAppTypes";
-import { Link } from "react-router-dom";
-import  {MouseEvent} from "react";
 import Avatar from "@mui/material/Avatar";
+import { Link } from "react-router-dom";
 
+import img from "../images/film-poster-placeholder.png";
+import { DiscoverMovieOverviewProps } from "../types/movieAppTypes";
+import { MoviesContext } from ".././contexts/moviesContext";
 
 const styles = {
   card: { maxWidth: 345 },
@@ -25,25 +27,27 @@ const styles = {
   },
 };
 
-interface MovieCardProps  {
+interface MovieCardProps {
   movie: DiscoverMovieOverviewProps;
-  selectFavourite: (movieId: number) => void;
-} 
+}
 
-const MovieCard = ({movie, selectFavourite}: MovieCardProps) => {
+const MovieCard = ({ movie }: MovieCardProps) => {
+  const { favourites, addToFavourites } = useContext(MoviesContext);
 
-  
+  const isFavourite = favourites.find((id: number) => id === movie.id)
+    ? true
+    : false;
+
   const handleAddToFavourite = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    selectFavourite(movie.id);
+    addToFavourites(movie);
   };
- 
 
   return (
     <Card sx={styles.card}>
-            <CardHeader
+      <CardHeader
         avatar={
-          movie.favourite ? (
+          isFavourite ? (
             <Avatar sx={styles.avatar}>
               <FavoriteIcon />
             </Avatar>
@@ -51,52 +55,53 @@ const MovieCard = ({movie, selectFavourite}: MovieCardProps) => {
         }
         title={
           <Typography variant="h5" component="p">
-            {movie.title}{" "}
+            {movie.title}
           </Typography>
         }
       />
 
-<CardMedia
-      component="img"
-      sx={styles.media}
-      image={
-        movie.poster_path
-          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-          : img
-      }
-      alt={movie.title}
-    />
+      <CardMedia
+        component="img"
+        sx={styles.media}
+        image={
+          movie.poster_path
+            ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+            : img
+        }
+        alt={movie.title}
+      />
 
       <CardContent>
         <Grid container>
           <Grid item xs={6}>
             <Typography variant="h6" component="p">
-              <CalendarIcon fontSize="small" />
-              {movie.release_date}
+              <CalendarIcon fontSize="small" /> {movie.release_date}
             </Typography>
           </Grid>
           <Grid item xs={6}>
             <Typography variant="h6" component="p">
-              <StarRateIcon fontSize="small" />
-              {"  "} {movie.vote_average}{" "}
+              <StarRateIcon fontSize="small" /> {movie.vote_average}
             </Typography>
           </Grid>
         </Grid>
       </CardContent>
+
       <CardActions disableSpacing>
-       <IconButton aria-label="add to favourites" onClick={handleAddToFavourite}>
+        <IconButton
+          aria-label="add to favourites"
+          onClick={handleAddToFavourite}
+        >
           <FavoriteIcon color="primary" fontSize="large" />
-    </IconButton>
-        
+        </IconButton>
+
         <Link to={`/movies/${movie.id}`}>
           <Button variant="outlined" size="medium" color="primary">
             More Info ...
           </Button>
         </Link>
-
       </CardActions>
     </Card>
   );
-}
+};
 
 export default MovieCard;

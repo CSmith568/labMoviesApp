@@ -1,7 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Navigate, Routes } from "react-router-dom";
 import { StrictMode } from "react";
-
 import HomePage from "./pages/HomePage";
 import MoviePage from "./pages/MovieDetailsPage";
 import FavouriteMoviesPage from "./pages/FavouriteMoviesPage";
@@ -11,6 +10,9 @@ import SiteHeader from "./components/SiteHeader";
 
 import { QueryClientProvider, QueryClient } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import MoviesContextProvider from "./contexts/moviesContext";
+import React from "react";
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,8 +29,8 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <SiteHeader />
-
-        <Routes>
+          <MoviesContextProvider>
+            <Routes>
           <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
           <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
           <Route path="/movies/:id" element={<MoviePage />} />
@@ -36,15 +38,22 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
+        </MoviesContextProvider>
       </BrowserRouter>
-
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
+
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+
+root.render(
+  <React.StrictMode>
+    <MoviesContextProvider>
+      <App />
+    </MoviesContextProvider>
+  </React.StrictMode>
 );
