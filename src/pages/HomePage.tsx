@@ -1,5 +1,5 @@
-import PageTemplate from '../components/TemplateMovieListPage';
-import {DiscoverMovieOverviewProps } from "../types/movieAppTypes";
+import PageTemplate from "../components/TemplateMovieListPage";
+import { DiscoverMovieOverviewProps } from "../types/movieAppTypes";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI, {
@@ -8,13 +8,14 @@ import MovieFilterUI, {
 } from "../components/MovieFilterUI";
 import { useQuery } from "react-query";
 import Spinner from "../components/Spinner";
-
+import AddToFavouritesIcon from "../components/cardIcons/AddToFavourites";
 
 const titleFiltering = {
   name: "title",
   value: "",
   condition: titleFilter,
 };
+
 const genreFiltering = {
   name: "genre",
   value: "0",
@@ -22,22 +23,24 @@ const genreFiltering = {
 };
 
 const HomePage = () => {
-  const { data, error, isLoading, isError } = useQuery<DiscoverMovieOverviewProps[], Error>("discover", getMovies);
-  const { filterValues, setFilterValues, filterFunction } = useFiltering(
-    [titleFiltering, genreFiltering]
-  );
+  const { data, error, isLoading, isError } = useQuery<
+    DiscoverMovieOverviewProps[],
+    Error
+  >("discover", getMovies);
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  const { filterValues, setFilterValues, filterFunction } = useFiltering([
+    titleFiltering,
+    genreFiltering,
+  ]);
 
-  if (isError) {
-    return <h1>{error.message}</h1>;
-  }
+  if (isLoading) return <Spinner />;
+  if (isError) return <h1>{error.message}</h1>;
 
+  const movies = data ?? [];
+  const displayedMovies = filterFunction(movies);
 
   const changeFilterValues = (type: string, value: string) => {
-    const changedFilter = { name: type, value: value };
+    const changedFilter = { name: type, value };
     const updatedFilterSet =
       type === "title"
         ? [changedFilter, filterValues[1]]
@@ -45,20 +48,12 @@ const HomePage = () => {
     setFilterValues(updatedFilterSet);
   };
 
-  const movies = data ? data : [];
-  const displayedMovies = filterFunction(movies);
-
-  // Redundant, but necessary to avoid app crashing.
-  const favourites = movies.filter(m => m.favourite)
-  localStorage.setItem("favourites", JSON.stringify(favourites));
-  const addToFavourites = (movieId: number) => true;
-
   return (
     <>
       <PageTemplate
         title="Discover Movies"
         movies={displayedMovies}
-        selectFavourite={addToFavourites}
+        action={(movie) => <AddToFavouritesIcon movie={movie} />}
       />
       <MovieFilterUI
         onFilterValuesChange={changeFilterValues}
@@ -68,4 +63,5 @@ const HomePage = () => {
     </>
   );
 };
+
 export default HomePage;

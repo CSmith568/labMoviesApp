@@ -1,5 +1,4 @@
-
-import React, { MouseEvent, useContext } from "react";
+import React, { useContext } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -11,7 +10,6 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
 
@@ -29,19 +27,13 @@ const styles = {
 
 interface MovieCardProps {
   movie: DiscoverMovieOverviewProps;
+  action?: (m: DiscoverMovieOverviewProps) => React.ReactNode;
 }
 
-const MovieCard = ({ movie }: MovieCardProps) => {
-  const { favourites, addToFavourites } = useContext(MoviesContext);
+const MovieCard = ({ movie, action }: MovieCardProps) => {
+  const { favourites } = useContext(MoviesContext);
 
-  const isFavourite = favourites.find((id: number) => id === movie.id)
-    ? true
-    : false;
-
-  const handleAddToFavourite = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    addToFavourites(movie);
-  };
+  const isFavourite = favourites.includes(movie.id);
 
   return (
     <Card sx={styles.card}>
@@ -74,12 +66,12 @@ const MovieCard = ({ movie }: MovieCardProps) => {
       <CardContent>
         <Grid container>
           <Grid item xs={6}>
-            <Typography variant="h6" component="p">
+            <Typography variant="h6">
               <CalendarIcon fontSize="small" /> {movie.release_date}
             </Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="h6" component="p">
+            <Typography variant="h6">
               <StarRateIcon fontSize="small" /> {movie.vote_average}
             </Typography>
           </Grid>
@@ -87,12 +79,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
       </CardContent>
 
       <CardActions disableSpacing>
-        <IconButton
-          aria-label="add to favourites"
-          onClick={handleAddToFavourite}
-        >
-          <FavoriteIcon color="primary" fontSize="large" />
-        </IconButton>
+        {action && action(movie)}
 
         <Link to={`/movies/${movie.id}`}>
           <Button variant="outlined" size="medium" color="primary">

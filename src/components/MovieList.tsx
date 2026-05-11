@@ -1,20 +1,21 @@
-import Movie from "./MovieCard";
 import Grid from "@mui/material/Grid";
-import { BaseMovieListProps } from "../types/movieAppTypes";
+import MovieCard from "./MovieCard";
+import { DiscoverMovieOverviewProps } from "../types/movieAppTypes";
 
-const MovieList  = ({ movies, selectFavourite }: BaseMovieListProps) => {
-  if (!movies || movies.length === 0) {
-    return <p>No movies found.</p>;
-  }
+interface MovieListProps {
+  movies: DiscoverMovieOverviewProps[];
+  action?: (m: DiscoverMovieOverviewProps) => React.ReactNode;
+}
 
+const MovieList = ({ movies, action }: MovieListProps) => {
   return (
-    <Grid container spacing={5}>
-      {movies.map((m) => (
-        <Grid key={m.id} item xs={12} sm={6} md={4} lg={3}>
-          <Movie movie={m} selectFavourite={selectFavourite} />
+    <>
+      {movies.map((movie) => (
+        <Grid key={movie.id} item xs={12} sm={6} md={3} lg={2}>
+          <MovieCard movie={movie} action={action} />
         </Grid>
       ))}
-    </Grid>
+    </>
   );
 };
 

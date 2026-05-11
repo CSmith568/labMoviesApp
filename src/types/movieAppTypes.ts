@@ -10,11 +10,12 @@ export type DiscoverMovieOverviewProps =  NonNullable<DiscoverMoviesProps["resul
 favourite: boolean;
 };
 
-// Props interface for components that display a list of movies
-export type BaseMovieListProps  ={
+
+export type BaseMovieListProps = {
   movies: NonNullable<DiscoverMovieOverviewProps[]>;
-  selectFavourite: (movieId: number) => void;  //add this
-}
+  action: (m: DiscoverMovieOverviewProps) => React.ReactNode;
+};
+
 
 // Type for the API response when fetching detailed movie information
 export type MovieDetailsProps = paths["/3/movie/{movie_id}"]["get"]["responses"][200]["content"]["application/json"] & {
@@ -44,4 +45,9 @@ export type MovieReviewProps = NonNullable<MovieReviewsProps["results"]>[number]
 
 export interface genreData {
   genres: { id: number; name: string }[];
+}
+export interface Review {
+  movieId: number;
+  content: string;
+  rating: number;
 }
