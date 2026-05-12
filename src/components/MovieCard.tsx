@@ -12,10 +12,9 @@ import StarRateIcon from "@mui/icons-material/StarRate";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
-
 import img from "../images/film-poster-placeholder.png";
-import { DiscoverMovieOverviewProps } from "../types/movieAppTypes";
-import { MoviesContext } from ".././contexts/moviesContext";
+import { MoviesContext } from "../contexts/moviesContext";
+import { MovieCardProps } from "../types/movieAppTypes";
 
 const styles = {
   card: { maxWidth: 345 },
@@ -25,12 +24,12 @@ const styles = {
   },
 };
 
-interface MovieCardProps {
-  movie: DiscoverMovieOverviewProps;
-  action?: (m: DiscoverMovieOverviewProps) => React.ReactNode;
+interface MovieCardComponentProps {
+  movie: MovieCardProps;
+  action: (m: MovieCardProps) => React.ReactNode;
 }
 
-const MovieCard = ({ movie, action }: MovieCardProps) => {
+const MovieCard = ({ movie, action }: MovieCardComponentProps) => {
   const { favourites } = useContext(MoviesContext);
 
   const isFavourite = favourites.includes(movie.id);
@@ -79,7 +78,7 @@ const MovieCard = ({ movie, action }: MovieCardProps) => {
       </CardContent>
 
       <CardActions disableSpacing>
-        {action && action(movie)}
+        {action(movie)}
 
         <Link to={`/movies/${movie.id}`}>
           <Button variant="outlined" size="medium" color="primary">

@@ -1,29 +1,39 @@
-import Header from "./HeaderMovieList";
+import React from "react";
 import Grid from "@mui/material/Grid";
 import MovieList from "./MovieList";
-import { MovieListPageTemplateProps } from "../types/movieAppTypes";
+import { MovieCardProps } from "../types/movieAppTypes";
+import HeaderMovieList from "../components/HeaderMovieList";
 
-const styles = {
-  root: {
-    backgroundColor: "#bfbfbf",
-  },
-};
 
-const MovieListPageTemplate = ({
+interface PageTemplateProps {
+  movies: MovieCardProps[];
+  action: (m: MovieCardProps) => React.ReactNode;
+  title: string;
+  children?: React.ReactElement;
+}
+
+const PageTemplate = ({
   movies,
-  title,
   action,
-}: MovieListPageTemplateProps) => {
+  title,
+  children,
+}: PageTemplateProps) => {
   return (
-    <Grid container sx={styles.root}>
+  <>
+    <HeaderMovieList title={title} />
+    <Grid container sx={{ padding: "20px" }}>
       <Grid item xs={12}>
-        <Header title={title} />
-      </Grid>
-      <Grid item container spacing={5}>
         <MovieList movies={movies} action={action} />
       </Grid>
+      {children && (
+        <Grid item xs={12}>
+          {children}
+        </Grid>
+      )}
     </Grid>
-  );
+  </>
+);
+
 };
 
-export default MovieListPageTemplate;
+export default PageTemplate;

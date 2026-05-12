@@ -1,26 +1,24 @@
-import { MouseEvent, useContext } from "react";
-import IconButton from "@mui/material/IconButton";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { MoviesContext } from "../../contexts/moviesContext";
+import React, { useContext } from "react";
 import { DiscoverMovieOverviewProps } from "../../types/movieAppTypes";
+import { MoviesContext } from "../../contexts/moviesContext";
+import IconButton from "@mui/material/IconButton";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 interface AddToFavouritesProps {
   movie: DiscoverMovieOverviewProps;
 }
 
-const AddToFavourites = ({ movie }: AddToFavouritesProps) => {
-  const context = useContext(MoviesContext);
-
-  const onUserSelect = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    context.addToFavourites(movie);
-  };
+const AddToFavouritesIcon = ({ movie }: AddToFavouritesProps) => {
+  const { addToFavourites } = useContext(MoviesContext);
 
   return (
-    <IconButton aria-label="add to favourites" onClick={onUserSelect}>
-      <FavoriteIcon color="primary" fontSize="large" />
+    <IconButton
+      aria-label="add to favorites"
+      onClick={() => addToFavourites(movie as any)}
+    >
+      <FavoriteBorderIcon />
     </IconButton>
   );
 };
 
-export default AddToFavourites;
+export default AddToFavouritesIcon;

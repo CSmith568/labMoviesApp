@@ -4,6 +4,7 @@ import Header from "../components/HeaderMovieList";
 import MovieList from "../components/MovieList";
 import { DiscoverMovieOverviewProps } from "../types/movieAppTypes";
 import { getUpcomingMovies } from "../api/tmdb-api";
+import AddToFavouritesIcon from "../components/cardIcons/AddToFavourites";
 
 const UpcomingMoviesPage = () => {
   const [movies, setMovies] = useState<DiscoverMovieOverviewProps[]>([]);
@@ -21,7 +22,10 @@ const UpcomingMoviesPage = () => {
       </Grid>
 
       <Grid item container spacing={5}>
-       <MovieList movies={movies} selectFavourite={() => {}} />
+        <MovieList 
+          movies={movies} 
+          action={(movie) => <AddToFavouritesIcon movie={movie} />}
+        />
       </Grid>
     </Grid>
   );

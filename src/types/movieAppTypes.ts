@@ -12,9 +12,10 @@ favourite: boolean;
 
 
 export type BaseMovieListProps = {
-  movies: NonNullable<DiscoverMovieOverviewProps[]>;
-  action: (m: DiscoverMovieOverviewProps) => React.ReactNode;
+  movies: NonNullable<MovieDetailsProps[]>;
+  action: (m: MovieDetailsProps) => React.ReactNode;
 };
+
 
 
 // Type for the API response when fetching detailed movie information
@@ -51,3 +52,4 @@ export interface Review {
   content: string;
   rating: number;
 }
+export type MovieCardProps = DiscoverMovieOverviewProps | MovieDetailsProps;

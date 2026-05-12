@@ -53,7 +53,9 @@ const HomePage = () => {
       <PageTemplate
         title="Discover Movies"
         movies={displayedMovies}
-        action={(movie) => <AddToFavouritesIcon movie={movie} />}
+        action={(movie) => {
+          return <AddToFavouritesIcon movie={movie} />;
+        }}
       />
       <MovieFilterUI
         onFilterValuesChange={changeFilterValues}
