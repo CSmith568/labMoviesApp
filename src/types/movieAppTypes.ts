@@ -53,3 +53,11 @@ export interface Review {
   rating: number;
 }
 export type MovieCardProps = DiscoverMovieOverviewProps | MovieDetailsProps;
+
+export interface Review {
+  author: string;
+  content: string;
+  rating: number;
+  movieId: number;
+  agree?: boolean;
+}
