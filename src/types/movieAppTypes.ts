@@ -61,3 +61,16 @@ export interface Review {
   movieId: number;
   agree?: boolean;
 }
+
+export type TVShowProps = paths["/3/tv/{series_id}"]["get"]["responses"][200]["content"]["application/json"] & {
+  favourite: boolean;
+};
+
+export type DiscoverTvShowsProps =
+  paths["/3/discover/tv"]["get"]["responses"][200]["content"]["application/json"];
+
+export type TVShow = NonNullable<DiscoverTvShowsProps["results"]>[number] & {
+  favourite: boolean;
+};
+
+

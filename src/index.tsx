@@ -19,9 +19,6 @@ import { PopularActors } from "./pages/Actors/Popular";
 import { TopRatedActors } from "./pages/Actors/TopRated";
 import { ActorDetail } from "./pages/Actors/ActorDetail";
 
-
-
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -37,33 +34,33 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <SiteHeader />
-          <MoviesContextProvider>
-            <Routes>
-          <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
-          <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
-          <Route path="/movies/:id" element={<MoviePage />} />
-          <Route path="/reviews/:id" element={<MovieReviewPage />} />
-          <Route path="/" element={<HomePage />} />
-          <Route path="*" element={<Navigate to="/" />} />
-           <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
-           <Route path="/tv-shows/popular" element={<PopularTvShows />} />
-           <Route path="/actors/:id" element={<ActorDetail />} />
-          
+        <MoviesContextProvider>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
+            <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
+            <Route path="/movies/:id" element={<MoviePage />} />
+            <Route path="/reviews/:id" element={<MovieReviewPage />} />
+            <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
 
+            {/* TV Shows Routes */}
+            <Route path="/tv-shows/popular" element={<PopularTvShows />} />
+            <Route path="/tv-shows/top-rated" element={<TopRatedTvShows />} />
+            <Route path="/tv-shows/trending" element={<TrendingTvShows />} />
 
-<Route path="/tv-shows/top-rated" element={<TopRatedTvShows />} />
-<Route path="/tv-shows/trending" element={<TrendingTvShows />} />
-<Route path="/actors/popular" element={<PopularActors />} />
-<Route path="/actors/top-rated" element={<TopRatedActors />} />
+            {/* Actor Routes - Specific routes BEFORE parameterized route */}
+            <Route path="/actors/popular" element={<PopularActors />} />
+            <Route path="/actors/top-rated" element={<TopRatedActors />} />
+            <Route path="/actors/:id" element={<ActorDetail />} />
 
-        </Routes>
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
         </MoviesContextProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };
-
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
