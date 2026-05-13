@@ -12,6 +12,13 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import MoviesContextProvider from "./contexts/moviesContext";
 import React from "react";
 import AddMovieReviewPage from './pages/AddMovieReviewPage';
+import { PopularTvShows } from "./pages/TvShows/Popular";
+import { TopRatedTvShows } from "./pages/TvShows/TopRated";
+import { TrendingTvShows } from "./pages/TvShows/Trending";
+import { PopularActors } from "./pages/Actors/Popular";
+import { TopRatedActors } from "./pages/Actors/TopRated";
+import { ActorDetail } from "./pages/Actors/ActorDetail";
+
 
 
 
@@ -39,6 +46,16 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="*" element={<Navigate to="/" />} />
            <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
+           <Route path="/tv-shows/popular" element={<PopularTvShows />} />
+           <Route path="/actors/:id" element={<ActorDetail />} />
+          
+
+
+<Route path="/tv-shows/top-rated" element={<TopRatedTvShows />} />
+<Route path="/tv-shows/trending" element={<TrendingTvShows />} />
+<Route path="/actors/popular" element={<PopularActors />} />
+<Route path="/actors/top-rated" element={<TopRatedActors />} />
+
         </Routes>
         </MoviesContextProvider>
       </BrowserRouter>
