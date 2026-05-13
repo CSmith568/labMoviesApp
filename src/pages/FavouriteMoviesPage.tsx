@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import PageTemplate from "../components/TemplateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
-import { useQueries } from "react-query";
+import { useQueries } from "@tanstack/react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/Spinner";
 import useFiltering from "../hooks/useFiltering";
-import MovieFilterUI, { titleFilter,genreFilter,} from "../components/MovieFilterUI";
+import MovieFilterUI, { titleFilter, genreFilter } from "../components/MovieFilterUI";
 import RemoveFromFavourites from "../components/cardIcons/RemoveFromFavourites";
 import WriteReview from "../components/cardIcons/WriteReview";
 
@@ -21,7 +21,7 @@ const genreFiltering = {
   condition: genreFilter,
 };
 
-const FavouriteMoviesPage = () => {
+const FavouriteMoviesPage: React.FC = () => {
   const { favourites: movieIds } = useContext(MoviesContext);
 
   const { filterValues, setFilterValues, filterFunction } = useFiltering([
@@ -29,12 +29,12 @@ const FavouriteMoviesPage = () => {
     genreFiltering,
   ]);
 
-  const favouriteMovieQueries = useQueries(
-    movieIds.map((movieId) => ({
+  const favouriteMovieQueries = useQueries({
+    queries: movieIds.map((movieId) => ({
       queryKey: ["movie", movieId],
       queryFn: () => getMovie(movieId.toString()),
-    }))
-  );
+    })),
+  });
 
   const isLoading = favouriteMovieQueries.some((q) => q.isLoading);
   if (isLoading) return <Spinner />;
@@ -42,7 +42,7 @@ const FavouriteMoviesPage = () => {
   const allFavourites = favouriteMovieQueries.map((q) => q.data);
   const displayedMovies = filterFunction(allFavourites ?? []);
 
-  const changeFilterValues = (type: string, value: string) => {
+  const changeFilterValues = (type: string, value: string): void => {
     const changedFilter = { name: type, value };
     const updatedFilterSet =
       type === "title"
@@ -53,17 +53,15 @@ const FavouriteMoviesPage = () => {
 
   return (
     <>
-       <PageTemplate
+      <PageTemplate
         title="Favourite Movies"
         movies={displayedMovies}
-        action={(movie) => {
-          return (
-            <>
-              <RemoveFromFavourites {...movie} />
-              <WriteReview {...movie} />
-            </>
-          );
-        }}
+   action={(movie) => (
+  <>
+    <RemoveFromFavourites {...(movie as any)} />
+    <WriteReview {...(movie as any)} />
+  </>
+)}
       />
 
       <MovieFilterUI

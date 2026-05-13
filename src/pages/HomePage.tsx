@@ -6,7 +6,7 @@ import MovieFilterUI, {
   titleFilter,
   genreFilter,
 } from "../components/MovieFilterUI";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import Spinner from "../components/Spinner";
 import AddToFavouritesIcon from "../components/cardIcons/AddToFavourites";
 
@@ -26,7 +26,10 @@ const HomePage = () => {
   const { data, error, isLoading, isError } = useQuery<
     DiscoverMovieOverviewProps[],
     Error
-  >("discover", getMovies);
+  >({
+    queryKey: ["discover"],
+    queryFn: () => getMovies(),
+  });
 
   const { filterValues, setFilterValues, filterFunction } = useFiltering([
     titleFiltering,

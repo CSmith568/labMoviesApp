@@ -5,7 +5,7 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import { getMovieImages } from "../api/tmdb-api";
 import { MovieImage, MovieDetailsProps } from "../types/movieAppTypes";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import Spinner from "./Spinner";
 
 const styles = {
@@ -26,10 +26,10 @@ interface TemplateMoviePageProps {
 }
 
 const TemplateMoviePage = ({ movie, children }: TemplateMoviePageProps) => {
-  const { data, error, isLoading, isError } = useQuery<MovieImage[], Error>(
-    ["images", movie.id],
-    () => getMovieImages(movie.id)
-  );
+  const { data, error, isLoading, isError } = useQuery<MovieImage[], Error>({
+    queryKey: ["images", movie.id],
+    queryFn: () => getMovieImages(movie.id),
+  });
 
   if (isLoading) {
     return <Spinner />;

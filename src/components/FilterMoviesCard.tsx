@@ -10,10 +10,9 @@ import SortIcon from "@mui/icons-material/Sort";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { SelectChangeEvent } from "@mui/material";
-
 import type { FilterOption, genreData } from "../types/movieAppTypes";
 import { getGenres } from "../api/tmdb-api";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import Spinner from "./Spinner";
 
 const styles = {
@@ -38,7 +37,10 @@ const FilterMoviesCard = ({
 }: FilterMoviesCardProps) => {
 
   const { data, error, isLoading, isError } =
-    useQuery<genreData, Error>("genres", getGenres);
+  useQuery<genreData, Error>({
+    queryKey: ["genres"],
+    queryFn: getGenres
+  });
 
   if (isLoading) {
     return <Spinner />;

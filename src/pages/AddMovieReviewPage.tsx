@@ -1,7 +1,7 @@
 import PageTemplate from "../components/TemplateMoviePage";
 import ReviewForm from "../components/reviewForm";
 import { useLocation } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/Spinner";
 import { MovieDetailsProps } from "../types/movieAppTypes";
@@ -21,16 +21,11 @@ const WriteReviewPage = () => {
 
   const { movieId } = state;
 
-  const {
-    data: movie,
-    error,
-    isLoading,
-    isError,
-  } = useQuery<MovieDetailsProps, Error>(
-    ["movie", movieId],
-    () => getMovie(movieId.toString()),
-    { enabled: !!movieId }
-  );
+const { data: movie, error, isLoading, isError } = useQuery<MovieDetailsProps, Error>({
+  queryKey: ["movie", movieId],
+  queryFn: () => getMovie(movieId.toString()),
+  enabled: !!movieId
+});
 
   if (isLoading) {
     return <Spinner />;

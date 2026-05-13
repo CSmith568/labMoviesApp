@@ -1,19 +1,30 @@
-import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Header from "../components/HeaderMovieList";
 import MovieList from "../components/MovieList";
-import { DiscoverMovieOverviewProps } from "../types/movieAppTypes";
-import { getUpcomingMovies } from "../api/tmdb-api";
-import AddToFavouritesIcon from "../components/cardIcons/AddToFavourites";
+import AddToMustWatchIcon from "../components/cardIcons/AddToMustWatch";
+import { useUpcomingMovies } from "../hooks/useUpcomingMovies";
+import { useContext, useMemo } from "react";
+import { MoviesContext } from "../contexts/moviesContext";
 
 const UpcomingMoviesPage = () => {
-  const [movies, setMovies] = useState<DiscoverMovieOverviewProps[]>([]);
+  const { data: movies = [], isLoading, error } = useUpcomingMovies();
+  const { mustWatchMovies } = useContext(MoviesContext);
 
-  useEffect(() => {
-    getUpcomingMovies().then((movies) => {
-      setMovies(movies);
-    });
-  }, []);
+  const sortedMovies = useMemo(() => {
+    return [...movies]
+      .filter((movie) => movie !== undefined)
+      .sort((a, b) => {
+        const aIsMustWatch = mustWatchMovies.includes(a.id);
+        const bIsMustWatch = mustWatchMovies.includes(b.id);
+
+        if (aIsMustWatch && !bIsMustWatch) return -1;
+        if (!aIsMustWatch && bIsMustWatch) return 1;
+        return 0;
+      });
+  }, [movies, mustWatchMovies]);
+
+  if (isLoading) return <div>Loading upcoming movies...</div>;
+  if (error) return <div>Error loading movies</div>;
 
   return (
     <Grid container sx={{ padding: "20px" }}>
@@ -23,8 +34,10 @@ const UpcomingMoviesPage = () => {
 
       <Grid item container spacing={5}>
         <MovieList 
-          movies={movies} 
-          action={(movie) => <AddToFavouritesIcon movie={movie} />}
+          movies={sortedMovies} 
+          action={(movie) => 
+            movie ? <AddToMustWatchIcon {...movie} /> : null
+          }
         />
       </Grid>
     </Grid>
