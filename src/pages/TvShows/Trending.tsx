@@ -2,6 +2,7 @@ import Grid from "@mui/material/Grid";
 import Header from "../../components/HeaderMovieList";
 import MovieList from "../../components/MovieList";
 import AddToMustWatchIcon from "../../components/cardIcons/AddToMustWatch";
+import { Pagination } from "../../components/Pagination";
 import { useTrendingTvShows } from "../../hooks/useTrendingTvShows";
 import { useContext, useMemo, useState } from "react";
 import { MoviesContext } from "../../contexts/moviesContext";
@@ -12,6 +13,7 @@ export const TrendingTvShows = () => {
   const { mustWatchMovies } = useContext(MoviesContext);
   const [sortBy, setSortBy] = useState<"trending" | "rating" | "name">("trending");
   const [minRating, setMinRating] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const sortedTvShows = useMemo(() => {
     return [...tvShows]
@@ -37,6 +39,11 @@ export const TrendingTvShows = () => {
       });
   }, [tvShows, mustWatchMovies, sortBy, minRating]);
 
+  const itemsPerPage = 10;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedShows = sortedTvShows.slice(startIndex, startIndex + itemsPerPage);
+  const totalPages = Math.ceil(sortedTvShows.length / itemsPerPage);
+
   if (isLoading) return <div>Loading trending TV shows...</div>;
   if (error) return <div>Error loading TV shows</div>;
 
@@ -52,19 +59,28 @@ export const TrendingTvShows = () => {
           <strong>Sort By:</strong>
           <ButtonGroup variant="outlined" sx={{ ml: 1 }}>
             <Button
-              onClick={() => setSortBy("trending")}
+              onClick={() => {
+                setSortBy("trending");
+                setCurrentPage(1);
+              }}
               variant={sortBy === "trending" ? "contained" : "outlined"}
             >
               Trending
             </Button>
             <Button
-              onClick={() => setSortBy("rating")}
+              onClick={() => {
+                setSortBy("rating");
+                setCurrentPage(1);
+              }}
               variant={sortBy === "rating" ? "contained" : "outlined"}
             >
               Rating
             </Button>
             <Button
-              onClick={() => setSortBy("name")}
+              onClick={() => {
+                setSortBy("name");
+                setCurrentPage(1);
+              }}
               variant={sortBy === "name" ? "contained" : "outlined"}
             >
               Name
@@ -76,28 +92,40 @@ export const TrendingTvShows = () => {
           <strong>Min Rating:</strong>
           <ButtonGroup variant="outlined" sx={{ ml: 1 }}>
             <Button
-              onClick={() => setMinRating(0)}
+              onClick={() => {
+                setMinRating(0);
+                setCurrentPage(1);
+              }}
               variant={minRating === 0 ? "contained" : "outlined"}
               size="small"
             >
               All
             </Button>
             <Button
-              onClick={() => setMinRating(6)}
+              onClick={() => {
+                setMinRating(6);
+                setCurrentPage(1);
+              }}
               variant={minRating === 6 ? "contained" : "outlined"}
               size="small"
             >
               6+
             </Button>
             <Button
-              onClick={() => setMinRating(7)}
+              onClick={() => {
+                setMinRating(7);
+                setCurrentPage(1);
+              }}
               variant={minRating === 7 ? "contained" : "outlined"}
               size="small"
             >
               7+
             </Button>
             <Button
-              onClick={() => setMinRating(8)}
+              onClick={() => {
+                setMinRating(8);
+                setCurrentPage(1);
+              }}
               variant={minRating === 8 ? "contained" : "outlined"}
               size="small"
             >
@@ -109,11 +137,19 @@ export const TrendingTvShows = () => {
 
       <Grid item container spacing={5}>
         <MovieList 
-          movies={sortedTvShows} 
+          movies={paginatedShows} 
           action={(show) => 
             show ? <AddToMustWatchIcon {...show} /> : null
           }
           routePath="/tv-shows"
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
         />
       </Grid>
     </Grid>

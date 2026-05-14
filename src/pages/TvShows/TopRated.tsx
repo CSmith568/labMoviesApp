@@ -2,11 +2,13 @@ import Grid from "@mui/material/Grid";
 import Header from "../../components/HeaderMovieList";
 import MovieList from "../../components/MovieList";
 import AddToMustWatchIcon from "../../components/cardIcons/AddToMustWatch";
+import { Pagination } from "../../components/Pagination";
 import { useTopRatedTvShows } from "../../hooks/useTopRated";
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import { MoviesContext } from "../../contexts/moviesContext";
 
 export const TopRatedTvShows = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const { data: tvShows = [], isLoading, error } = useTopRatedTvShows();
   const { mustWatchMovies } = useContext(MoviesContext);
 
@@ -23,6 +25,11 @@ export const TopRatedTvShows = () => {
       });
   }, [tvShows, mustWatchMovies]);
 
+  const itemsPerPage = 10;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedShows = sortedTvShows.slice(startIndex, startIndex + itemsPerPage);
+  const totalPages = Math.ceil(sortedTvShows.length / itemsPerPage);
+
   if (isLoading) return <div>Loading top-rated TV shows...</div>;
   if (error) return <div>Error loading TV shows</div>;
 
@@ -34,11 +41,19 @@ export const TopRatedTvShows = () => {
 
       <Grid item container spacing={5}>
         <MovieList 
-          movies={sortedTvShows} 
+          movies={paginatedShows} 
           action={(show) => 
             show ? <AddToMustWatchIcon {...show} /> : null
           }
           routePath="/tv-shows"
+        />
+      </Grid>
+
+      <Grid item xs={12}>
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
         />
       </Grid>
     </Grid>
