@@ -27,9 +27,10 @@ const styles = {
 interface MovieCardComponentProps {
   movie: MovieCardProps;
   action: (m: MovieCardProps) => React.ReactNode;
+  routePath?: string;
 }
 
-const MovieCard = ({ movie, action }: MovieCardComponentProps) => {
+const MovieCard = ({ movie, action, routePath = "/movies" }: MovieCardComponentProps) => {
   const { favourites } = useContext(MoviesContext);
 
   const isFavourite = favourites.includes(movie.id);
@@ -80,7 +81,7 @@ const MovieCard = ({ movie, action }: MovieCardComponentProps) => {
       <CardActions disableSpacing>
         {action(movie)}
 
-        <Link to={`/movies/${movie.id}`}>
+        <Link to={`${routePath}/${movie.id}`}>
           <Button variant="outlined" size="medium" color="primary">
             More Info ...
           </Button>

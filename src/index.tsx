@@ -18,6 +18,9 @@ import { TrendingTvShows } from "./pages/TvShows/Trending";
 import { PopularActors } from "./pages/Actors/Popular";
 import { TopRatedActors } from "./pages/Actors/TopRated";
 import { ActorDetail } from "./pages/Actors/ActorDetail";
+import { TvShowDetail } from "./pages/TvShows/Detail";
+
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,11 +50,13 @@ const App = () => {
             <Route path="/tv-shows/popular" element={<PopularTvShows />} />
             <Route path="/tv-shows/top-rated" element={<TopRatedTvShows />} />
             <Route path="/tv-shows/trending" element={<TrendingTvShows />} />
+            <Route path="/tv-shows/:id" element={<TvShowDetail />} />
 
-            {/* Actor Routes - Specific routes BEFORE parameterized route */}
+            {/* Actor Routes*/}
             <Route path="/actors/popular" element={<PopularActors />} />
             <Route path="/actors/top-rated" element={<TopRatedActors />} />
             <Route path="/actors/:id" element={<ActorDetail />} />
+           
 
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

@@ -38,6 +38,7 @@ export const PopularTvShows = () => {
           action={(show) => 
             show ? <AddToMustWatchIcon {...show} /> : null
           }
+          routePath="/tv-shows"
         />
       </Grid>
     </Grid>

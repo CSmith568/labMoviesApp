@@ -1,38 +1,46 @@
-import { useQuery } from "@tanstack/react-query";
-import { TVShow } from "../../types/movieAppTypes";
-
-
+import Grid from "@mui/material/Grid";
+import Header from "../../components/HeaderMovieList";
+import MovieList from "../../components/MovieList";
+import AddToMustWatchIcon from "../../components/cardIcons/AddToMustWatch";
+import { useTopRatedTvShows } from "../../hooks/useTopRated";
+import { useContext, useMemo } from "react";
+import { MoviesContext } from "../../contexts/moviesContext";
 
 export const TopRatedTvShows = () => {
-  const { data: tvShows, isLoading, error } = useQuery({
-    queryKey: ["topRatedTvShows"],
-    queryFn: async () => {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/tv/top_rated?api_key=${import.meta.env.VITE_TMDB_KEY}&page=1`
-      );
-      const data = await response.json();
-      return data.results as TVShow[];
-    },
-  });
+  const { data: tvShows = [], isLoading, error } = useTopRatedTvShows();
+  const { mustWatchMovies } = useContext(MoviesContext);
+
+  const sortedTvShows = useMemo(() => {
+    return [...tvShows]
+      .filter((show) => show !== undefined)
+      .sort((a, b) => {
+        const aIsFavourite = mustWatchMovies.includes(a.id);
+        const bIsFavourite = mustWatchMovies.includes(b.id);
+
+        if (aIsFavourite && !bIsFavourite) return -1;
+        if (!aIsFavourite && bIsFavourite) return 1;
+        return 0;
+      });
+  }, [tvShows, mustWatchMovies]);
 
   if (isLoading) return <div>Loading top-rated TV shows...</div>;
   if (error) return <div>Error loading TV shows</div>;
 
   return (
-    <div>
-      <h1>Top Rated TV Shows</h1>
-      <div className="tv-shows-grid">
-        {tvShows?.map((show) => (
-          <div key={show.id} className="tv-show-card">
-            <img
-              src={`https://image.tmdb.org/t/p/w200${show.poster_path}`}
-              alt={show.name}
-            />
-            <h3>{show.name}</h3>
-            <p>Rating: {show.vote_average}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+    <Grid container sx={{ padding: "20px" }}>
+      <Grid item xs={12}>
+        <Header title="Top Rated TV Shows" />
+      </Grid>
+
+      <Grid item container spacing={5}>
+        <MovieList 
+          movies={sortedTvShows} 
+          action={(show) => 
+            show ? <AddToMustWatchIcon {...show} /> : null
+          }
+          routePath="/tv-shows"
+        />
+      </Grid>
+    </Grid>
   );
 };
