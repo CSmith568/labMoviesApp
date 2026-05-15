@@ -19,7 +19,7 @@ export const TrendingTvShows = () => {
     return [...tvShows]
       .filter((show) => show !== undefined && show.vote_average >= minRating)
       .sort((a, b) => {
-        // First, sort by favorite status
+        //sort by favorite status
         const aIsFavourite = mustWatchMovies.includes(a.id);
         const bIsFavourite = mustWatchMovies.includes(b.id);
 

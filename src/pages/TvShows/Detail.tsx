@@ -27,7 +27,7 @@ export const TvShowDetail = () => {
       </Typography>
 
       <Grid container spacing={4}>
-        {/* Poster Section */}
+        //Poster Section
         <Grid item xs={12} sm={4}>
           {show.poster_path && (
             <Box
@@ -43,7 +43,7 @@ export const TvShowDetail = () => {
           )}
         </Grid>
 
-        {/* Content Section */}
+        //Content Section
         <Grid item xs={12} sm={8}>
           {/* Overview */}
           <Box sx={{ mb: 3 }}>
@@ -55,7 +55,7 @@ export const TvShowDetail = () => {
             </Typography>
           </Box>
 
-          {/* Genres */}
+          //Genres
           {show.genres && show.genres.length > 0 && (
             <Box sx={{ mb: 3 }}>
               {show.genres.map((genre: { id: number; name: string }) => (
@@ -81,7 +81,7 @@ export const TvShowDetail = () => {
               py: 2,
             }}
           >
-            {/* Number of Seasons */}
+      
             {show.number_of_seasons && (
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
@@ -91,7 +91,7 @@ export const TvShowDetail = () => {
               </Box>
             )}
 
-            {/* Number of Episodes */}
+          
             {show.number_of_episodes && (
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
@@ -101,7 +101,7 @@ export const TvShowDetail = () => {
               </Box>
             )}
 
-            {/* Rating */}
+         
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Rating
                 value={show.vote_average ? show.vote_average / 2 : 0}
@@ -113,7 +113,7 @@ export const TvShowDetail = () => {
               </Typography>
             </Box>
 
-            {/* First Air Date */}
+  
             {show.first_air_date && (
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Typography variant="body2" sx={{ fontWeight: "bold" }}>
@@ -124,7 +124,7 @@ export const TvShowDetail = () => {
             )}
           </Box>
 
-          {/* Status */}
+         
           {show.status && (
             <Box sx={{ mt: 2 }}>
               <Typography variant="body2">

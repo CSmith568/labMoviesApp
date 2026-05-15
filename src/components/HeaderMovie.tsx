@@ -9,7 +9,7 @@ const MovieHeader = (movie: MovieDetailsProps) => {
 
   const safeTitle = movie.title ?? "Untitled movie";
 
-  // read favourites array from localStorage
+  // read favourites array 
   const favourites = JSON.parse(
     localStorage.getItem("favourites") || "[]"
   );
