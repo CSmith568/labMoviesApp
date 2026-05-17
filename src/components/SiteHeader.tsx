@@ -29,26 +29,28 @@ const SiteHeader = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
-  const menuOptions = [
-    { label: "Home", path: "/" },
-    { label: "Favorites", path: "/movies/favourites" },
-    { label: "Upcoming", path: "/movies/upcoming" },
-    {
-      label: "TV Shows",
-      subItems: [
-        { label: "Popular", path: "/tv-shows/popular" },
-        { label: "Top Rated", path: "/tv-shows/top-rated" },
-        { label: "Trending", path: "/tv-shows/trending" },
-      ],
-    },
-    {
-      label: "Actors",
-      subItems: [
-        { label: "Popular Actors", path: "/actors/popular" },
-        { label: "Top Rated", path: "/actors/top-rated" },
-      ],
-    },
-  ];
+ const menuOptions = [
+  { label: "Home", path: "/" },
+  { label: "Favorites", path: "/movies/favourites" },
+  { label: "Upcoming", path: "/movies/upcoming" },
+  { label: "Fantasy Movies", path: "/fantasy" },
+  {
+    label: "TV Shows",
+    subItems: [
+      { label: "Popular", path: "/tv-shows/popular" },
+      { label: "Top Rated", path: "/tv-shows/top-rated" },
+      { label: "Trending", path: "/tv-shows/trending" },
+    ],
+  },
+  {
+    label: "Actors",
+    subItems: [
+      { label: "Popular Actors", path: "/actors/popular" },
+      { label: "Top Rated", path: "/actors/top-rated" },
+    ],
+  },
+];
+
 
   const handleMenuSelect = (pageURL: string) => {
     navigate(pageURL);

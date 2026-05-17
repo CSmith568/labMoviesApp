@@ -19,6 +19,8 @@ import { PopularActors } from "./pages/Actors/Popular";
 import { TopRatedActors } from "./pages/Actors/TopRated";
 import { ActorDetail } from "./pages/Actors/ActorDetail";
 import { TvShowDetail } from "./pages/TvShows/Detail";
+import { FantasyMoviePage } from './pages/FantasyMoviePage';
+
 
 
 
@@ -56,6 +58,8 @@ const App = () => {
             <Route path="/actors/popular" element={<PopularActors />} />
             <Route path="/actors/top-rated" element={<TopRatedActors />} />
             <Route path="/actors/:id" element={<ActorDetail />} />
+            <Route path="/fantasy" element={<FantasyMoviePage />} />
+
            
 
             <Route path="*" element={<Navigate to="/" />} />
