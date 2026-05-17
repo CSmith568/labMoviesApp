@@ -1,6 +1,5 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Navigate, Routes } from "react-router-dom";
-import { StrictMode } from "react";
 import HomePage from "./pages/HomePage";
 import MoviePage from "./pages/MovieDetailsPage";
 import FavouriteMoviesPage from "./pages/FavouriteMoviesPage";

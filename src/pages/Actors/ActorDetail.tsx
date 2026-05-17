@@ -75,7 +75,7 @@ useEffect(() => {
 
        
         <div style={styles.info}>
-          {/* Display actor's name as heading */}
+          {/* Display actors name as heading */}
           <h1 style={styles.title}>{actor.name}</h1>
 
          
@@ -88,7 +88,7 @@ useEffect(() => {
           <section style={styles.section}>
             <h2>Known For (Role Name & Description)</h2>
             <ul style={styles.filmList}>
-              {/* Loop through movies and display character and title */}
+              {/* Loop through movies and display character + title */}
               {topMovies.map((movie: any) => (
                 <li key={`${movie.id}-${movie.character}`} style={styles.filmItem}>
                   <strong>Role:</strong> {movie.character || "Unknown"} 

@@ -27,7 +27,6 @@ export const TvShowDetail = () => {
       </Typography>
 
       <Grid container spacing={4}>
-        //Poster Section
         <Grid item xs={12} sm={4}>
           {show.poster_path && (
             <Box
@@ -43,7 +42,7 @@ export const TvShowDetail = () => {
           )}
         </Grid>
 
-        //Content Section
+      
         <Grid item xs={12} sm={8}>
           {/* Overview */}
           <Box sx={{ mb: 3 }}>
@@ -55,7 +54,7 @@ export const TvShowDetail = () => {
             </Typography>
           </Box>
 
-          //Genres
+        
           {show.genres && show.genres.length > 0 && (
             <Box sx={{ mb: 3 }}>
               {show.genres.map((genre: { id: number; name: string }) => (
