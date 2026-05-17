@@ -1,7 +1,7 @@
 Assignment 2 - Movies App 
 Author: Claire Smith
 Student #: 20099917
-Demo: 
+Demo: https://youtu.be/o3k02bc5XZo
 GitHub Repo: https://github.com/CSmith568/assign2-movie-app.git
 
 🎬 Movie App – React SPA
